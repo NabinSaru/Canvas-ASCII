@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles/styles.css">
+
+  <script src="js/FileSaver.js"></script>
+  <script src="js/html2canvas.js"></script>
+  <script type="module" src="script.js" defer></script>
+</head>
+<body>
+  <canvas id="myCanvas" width="300" height="150">
+    Fallback content, in case the browser does not support Canvas.
+  </canvas>
+  <fieldset style="width: fit-content; margin-top: 8px;">
+    <legend>Image</legend>
+    <div class="image-input">
+      <input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;">
+      <label for="file">
+        <div id="input-label">Upload Image 📎</div>
+      </label>
+      <img id="output"/>
+    </div>
+  </fieldset>
+  <div class="setting">
+    <fieldset>
+      <legend>Controls</legend>
+      <div class="control">
+        <div class="dropdown">
+          <button class="dropbtn">Fill Style ↓</button>
+          <div class="dropdown-content" dropdown-content>
+          </div>
+        </div>
+        <div class="dropdown" style="margin-left: 24px;">
+          <button class="dropbtn">Fill Algorithm ↓</button>
+          <div class="dropdown-content" style="overflow: hidden;">
+            <a onclick="setFillAlgorithm(this)" id="1">Average Grayscale</a>
+            <a onclick="setFillAlgorithm(this)" id="2">Weighted Grayscale</a>
+            <a onclick="setFillAlgorithm(this)" id="3">Lightness Grayscale</a>
+            <a onclick="setFillAlgorithm(this)" id="4">Local Maxima</a>
+            <a onclick="setFillAlgorithm(this)" id="5">Relative Maxima</a>
+            <a onclick="setFillAlgorithm(this)" id="6">Saturation Based</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="shade-controller">
+        Reverse Shade:
+        <div type="radio" id="reverse-shade" style="cursor: pointer;">
+          ❎
+        </div>
+      </div>
+
+      <div class="resizer">
+        <label class="label" for="resize-slider">
+          Resizer: <span id="resize-value">0.1×</span>
+        </label>
+        <input type="range" name="range" id="resize-slider" min="0.01" max="1" step="0.01" value="0.1"/>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Export</legend>
+      <button class="dropbtn btn-action" onclick="copyToClipBoard()">Copy ASCII</button>
+      <div class="export-btn-group" style="margin-top: 18px;">
+        <button class="dropbtn btn-action" onclick="exportAscii()">Download ASCII</button>
+        <button class="dropbtn btn-action" style="margin-left: 18px;" onclick="exportAsPng()">Download PNG</button>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Custom Settings</legend>
+      <div class="control">
+        <div class="dropdown">
+          <button class="dropbtn">Custom Width ↓</button>
+          <div class="dropdown-content" style="overflow: hidden;">
+            <a onclick="setResizeSize(32)">32 chars</a>
+            <a onclick="setResizeSize(64)">64 chars</a>
+            <a onclick="setResizeSize(128)">128 chars</a>
+            <a onclick="setResizeSize(256)">256 chars</a>
+            <a onclick="setResizeSize(512)">512 chars</a>
+            <a onclick="setResizeSize(1024)">1024 chars</a>
+          </div>
+        </div>
+        <div class="custom-chars">
+          <div class="char-label">
+            <span>Custom Chars:</span>
+            <div class="clear" onclick="redrawCustom()">🖨</div>
+            <div class="clear" onclick="clearCustomCharacters()">❌</div>
+            <div class="info" data-tooltip="Insert from low to higher shade value or vice-versa.">ℹ</div>
+          </div>
+          <div class="character-inputs">
+            <input name='code' class='code-input' required/>
+            <input name='code' class='code-input' required/>
+            <input name='code' class='code-input' required/>
+            <input name='code' class='code-input' required/>
+            <input name='code' class='code-input' required/>
+            <input name='code' class='code-input' required/>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <p id="ascii-generator"></p>
+
+  <template fill-style-option>
+    <a onclick="setFillStyle(this)">Temp</a>
+  </template>
+</body>
+</html>
